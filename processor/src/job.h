@@ -1,9 +1,15 @@
 #ifndef JOB_H
 #define JOB_H
 
+#include "util.h"
+
 typedef struct {
-  char filename[255];
-  int assignedWorker;
+  int result; // TODO: Make this something meaningful
+} JobResult;
+
+typedef struct {
+  char filename[MAX_FILENAME_LENGTH];
+  JobResult result;
 } Job;
 
 typedef struct {

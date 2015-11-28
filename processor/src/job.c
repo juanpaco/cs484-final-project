@@ -26,7 +26,7 @@ JobList *buildJobList(char *dataDir) {
 
     while ((dir = readdir(d)) != NULL) {
       if (dir->d_name[0] != '.') {
-        jobs[i] = initJob(dir->d_name);
+        jobs[i++] = initJob(dir->d_name);
       }
     }
 
@@ -64,7 +64,6 @@ Job *initJob(char *filename) {
   int filenameLengh = strlen(filename);
 
   memcpy(job->filename, filename, filenameLengh);
-  job->assignedWorker = 0;
 
   return job;
 }
