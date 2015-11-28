@@ -1,0 +1,5 @@
+*.o
+final-project
+
+# If an MPI run gets aborted early, it leaves PI* files behind
+PI*
