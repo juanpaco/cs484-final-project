@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 }
 
 Node *start(int *argc, char ***argv) {
-  Node *node = (Node *)malloc(sizeof(Node));
+  Node *node = (Node *)calloc(1, sizeof(Node));
 
   gethostname(node->host, 253);
 
