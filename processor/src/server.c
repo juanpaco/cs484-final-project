@@ -60,7 +60,7 @@ void runServer(Node *node) {
       case COMM_TAG_WORK_REQUEST:
         //printf("(%d) Server got work requeest from %d\n", node->rank, status.MPI_SOURCE);
 
-        if (server.nextJobToDispatch < 1) {//server.jobList->length) {
+        if (server.nextJobToDispatch < server.jobList->length) {
           dispatchJob(&server, status.MPI_SOURCE);
         } else {
           terminateWorker(&server, status.MPI_SOURCE);

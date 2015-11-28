@@ -3,6 +3,7 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "job.h"
 #include "util.h"
@@ -20,6 +21,10 @@ void runWorker(Node *node) {
  // greet(node);
 
   while (keepGoing) {
+    // Must reset the filename so we don't get left without a terminating
+    // null character.
+    memset(filename, 0, MAX_FILENAME_LENGTH);
+
     // Request work
     //printf("(%d) Worker asking for work\n", node->rank);
     MPI_Send(
@@ -47,7 +52,7 @@ void runWorker(Node *node) {
     if (strcmp(filename, TERMINATION_MESSAGE)) {
       //printf("(%d) Working on %s\n", node->rank, filename);
       // work on it
-    //  sendResult(process(filename));
+      sendResult(process(filename));
     } else {
       // terminate
       //printf("(%d) Told to terminate\n", node->rank);
