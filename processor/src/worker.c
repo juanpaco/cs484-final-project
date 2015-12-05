@@ -7,8 +7,9 @@
 
 #include "job.h"
 #include "util.h"
+#include "calculate.h"
 
-JobResult *process(char *filename);
+JobResult *process(char *filename, char *phrase);
 void sendResult(JobResult *jobResult);
 
 void runWorker(Node *node) {
@@ -47,12 +48,12 @@ void runWorker(Node *node) {
     , &status
     );
 
-    printf("(%d) Told to work on %s\n", node->rank, filename);
+    //printf("(%d) Told to work on %s\n", node->rank, filename);
 
     if (strcmp(filename, TERMINATION_MESSAGE)) {
       //printf("(%d) Working on %s\n", node->rank, filename);
       // work on it
-      sendResult(process(filename));
+      sendResult(process(filename, "and it came to pass"));
     } else {
       // terminate
       //printf("(%d) Told to terminate\n", node->rank);
@@ -64,10 +65,10 @@ void runWorker(Node *node) {
 }
 
 // TODO: Landen's sequential function goes here
-JobResult *process(char *filename) {
+JobResult *process(char *filename, char *phrase) {
   JobResult *jobResult = (JobResult *)calloc(1, sizeof(JobResult));
 
-  jobResult->result = 42;
+  jobResult->result = calculate(filename, phrase);
 
   return jobResult;
 }

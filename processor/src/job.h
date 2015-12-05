@@ -27,7 +27,7 @@ JobList *initJobList(Job **jobs, int length);
 JobList *freeJobList(JobList *jobList);
 
 // Sort of like a constructor, but we're not sucky OOP here.
-Job *initJob(char *filename);
+Job *initJob(char *filename, char *location);
 
 // Releases the memory for a single job.
 Job *freeJob(Job *job);

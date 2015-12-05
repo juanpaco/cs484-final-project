@@ -26,7 +26,7 @@ JobList *buildJobList(char *dataDir) {
 
     while ((dir = readdir(d)) != NULL) {
       if (dir->d_name[0] != '.') {
-        jobs[i++] = initJob(dir->d_name);
+        jobs[i++] = initJob(dir->d_name, dataDir);
       }
     }
 
@@ -59,11 +59,18 @@ JobList *freeJobList(JobList *jobList) {
   return 0;
 }
 
-Job *initJob(char *filename) {
+Job *initJob(char *filename, char *fileLocation) {
   Job* job = (Job *)calloc(1, sizeof(Job));
-  int filenameLengh = strlen(filename);
+  int fileLocationLength = strlen(fileLocation);
+  int filenameLength = strlen(filename);
 
-  memcpy(job->filename, filename, filenameLengh);
+  //printf("filename: %s - %d\n", filename, filenameLength);
+  //printf("fileLocation: %s - %d\n", fileLocation, fileLocationLength);
+
+  memcpy(job->filename, fileLocation, fileLocationLength);
+  memcpy(&job->filename[fileLocationLength], filename, filenameLength);
+
+  //printf("we're getting: %s\n", job->filename);
 
   return job;
 }

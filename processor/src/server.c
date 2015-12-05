@@ -31,7 +31,7 @@ void runServer(Node *node) {
   int placeholder = 0; // We use this as a placeholder for our MPI comms
   MPI_Status status; // Another placeholder for dealing with MPI calls
 
-  greet(node);
+  //greet(node);
 
   // Init server state.  This could be pulled into a different function.
   server.nextJobToDispatch = 0;
@@ -40,11 +40,11 @@ void runServer(Node *node) {
   server.workerToJobMap = (Job **)calloc(server.jobList->length, sizeof(Job *));
   server.worldRank = node->rank;
 
-  printf("(%d) Server has %d jobs\n", node->rank, server.jobList->length);
+  //printf("(%d) Server has %d jobs\n", node->rank, server.jobList->length);
 
   // Begin the work of running
   while (server.completedWorkersCount < node->numProcessors - 1) {
-    printf("(%d) Server waiting for message\n", node->rank);
+    //printf("(%d) Server waiting for message\n", node->rank);
 
     MPI_Recv(
       &placeholder
@@ -64,11 +64,11 @@ void runServer(Node *node) {
           dispatchJob(&server, status.MPI_SOURCE);
         } else {
           terminateWorker(&server, status.MPI_SOURCE);
-          printf("(%d) Server terminated worker %d. %d terminated.\n"
-          , node->rank
-          , status.MPI_SOURCE
-          , server.completedWorkersCount
-          );
+          //printf("(%d) Server terminated worker %d. %d terminated.\n"
+          //, node->rank
+          //, status.MPI_SOURCE
+          //, server.completedWorkersCount
+          //);
         }
         break;
       case COMM_TAG_WORK_COMPLETE:
@@ -78,13 +78,13 @@ void runServer(Node *node) {
         receiveResult(&server, status.MPI_SOURCE);
         break;
       default:
-        printf("Received unknown tag: %d\n", status.MPI_TAG);
+        //printf("Received unknown tag: %d\n", status.MPI_TAG);
         break;
     }
   }
 
   releaseServerContents(&server);
-  printf("(%d) Server done\n", node->rank);
+  //printf("(%d) Server done\n", node->rank);
 }
 
 void releaseServerContents(Server *server) {
@@ -98,13 +98,13 @@ void dispatchJob(Server *server, int workerRank) {
   Job *job = server->jobList->jobs[server->nextJobToDispatch++];
   server->workerToJobMap[workerRank] = job;
 
-  printf(
-    "(%d) Server dispatching job %s to %d. Next job will be %d.\n"
-  , server->worldRank
-  , job->filename
-  , workerRank
-  , server->nextJobToDispatch
-  );
+  //printf(
+  //  "(%d) Server dispatching job %s to %d. Next job will be %d.\n"
+  //, server->worldRank
+  //, job->filename
+  //, workerRank
+  //, server->nextJobToDispatch
+  //);
 
   MPI_Send(
     job->filename
@@ -136,12 +136,13 @@ void receiveResult(Server *server, int workerRank) {
   , MPI_COMM_WORLD
   );
 
-  printf(
-    "(%d) Server receiving result from %d for job %s\n"
-  , server->worldRank
-  , workerRank
-  , server->workerToJobMap[workerRank]->filename
-  );
+  //printf(
+  //  "(%d) Server receiving result from %d for job %s\n"
+  //, server->worldRank
+  //, workerRank
+  //, server->workerToJobMap[workerRank]->filename
+  //);
+
   // Receive the result
   MPI_Recv(
     &server->workerToJobMap[workerRank]->result.result
@@ -153,13 +154,11 @@ void receiveResult(Server *server, int workerRank) {
   , &status
   );
 
-  //printf(
-  //  "(%d) Server received result from %d for job %s, and it was %d\n"
-  //, server->worldRank
-  //, workerRank
-  //, server->workerToJobMap[workerRank]->filename
-  //, server->workerToJobMap[workerRank]->result.result
-  //);
+  printf(
+    "%s:%d\n"
+  , server->workerToJobMap[workerRank]->filename
+  , server->workerToJobMap[workerRank]->result.result
+  );
 
   server->workerToJobMap[workerRank] = NULL;
 }

@@ -15,7 +15,6 @@ int main(int argc, char **argv) {
 
   if (node->rank == SERVER_RANK) {
     runServer(node);
-    printf("server all done\n");
   } else {
     runWorker(node);
   }
