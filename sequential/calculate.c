@@ -1,5 +1,8 @@
+#include "calculate.h"
+
 #include<stdio.h>
 #include<string.h>
+
 
 int calculate(char *file, char *phrase)
 {
@@ -9,9 +12,9 @@ int calculate(char *file, char *phrase)
         char heading[1000];
         char content[9000];
         fp = fopen(file,"r");
-        fgets(book, 9000, (FILE*)fp);
-        fgets(chapter, 9000, (FILE*)fp);
-        fgets(heading,9000, (FILE*)fp);
+        book = fgets(book, 50, (FILE*)fp);
+        fgets(chapter, 50, (FILE*)fp);
+        fgets(heading,1000, (FILE*)fp);
         fgets(content,9000, (FILE*)fp);
         fclose(fp);
         char *sub = strstr(content, phrase);
