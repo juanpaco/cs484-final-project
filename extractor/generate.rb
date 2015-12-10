@@ -1,17 +1,11 @@
 destination_directory = "data"
 
-# Yanked this from the Faker gem.  We can't seem to install gems on the open
-# labs, so I just grabbed the function that we need.
-def characters(char_count = 255)
-  rand(36**char_count).to_s(36).rjust(char_count, '0').chars.to_a.shuffle.join
-end
+32.times do |i|
+  outfile = "#{destination_directory}/#{i+32}.dummy.txt"
 
-1000.times do |i|
-  outfile = "#{destination_directory}/#{i}.dummy.txt"
+  chunksize = 1073741824/(32-i)
 
-  File.open(outfile, "w") do |f|
-    5000.times do |who_cares|
-      f.puts characters(1024)
-    end
-  end
+  puts outfile
+
+  `dd if=/dev/zero of=#{outfile} bs=#{chunksize} count=1`
 end
