@@ -1,21 +1,29 @@
 #include "calculate.h"
 
-#include<stdio.h>
-#include<string.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 int calculate(char *file, char *phrase)
 {
 	FILE * fp;
-        char book[50];
-        char chapter[50];
-        char heading[1000];
-        char content[9000];
+        //char book[50];
+        //char chapter[50];
+        //char heading[1000];
+        char *content;
         char *res;
+        int sz;
         fp = fopen(file,"r");
-        res = fgets(book, 50, (FILE*)fp);
-        res = fgets(chapter, 50, (FILE*)fp);
-        res = fgets(heading,1000, (FILE*)fp);
-        res = fgets(content,9000, (FILE*)fp);
+        //res = fgets(book, 50, (FILE*)fp);
+        //res = fgets(chapter, 50, (FILE*)fp);
+        //res = fgets(heading,1000, (FILE*)fp);
+        fseek(fp, 0L, SEEK_END);
+        sz = ftell(fp);
+        fseek(fp, 0L, SEEK_SET);
+
+        content = (char *)calloc(sz, sizeof(char));
+
+        res = fgets(content, sz, (FILE*)fp);
         fclose(fp);
         char *sub = strstr(content, phrase);
         int count = 0;
@@ -25,6 +33,7 @@ int calculate(char *file, char *phrase)
                 sub++;
                 sub = strstr(sub,phrase);
         }
+        free(content);
         return count;
 }
 

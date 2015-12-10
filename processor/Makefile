@@ -18,7 +18,7 @@ $(TARGET): $(OBJ)
 		$(CC) -o $@ $^ $(CFLAGS)
 
 run: $(TARGET)
-	/bin/rm -f PI* && $(MPI_HOME)/bin/mpirun -np 16 -machinefile $(TARGET).machines $(TARGET)
+	/bin/rm -f PI* && $(MPI_HOME)/bin/mpirun -np 2 -machinefile $(TARGET).machines $(TARGET)
 
 clean:
 		/bin/rm -f  *.o && /bin/rm -f $(TARGET)

@@ -154,11 +154,11 @@ void receiveResult(Server *server, int workerRank) {
   , &status
   );
 
-  printf(
-    "%s:%d\n"
-  , server->workerToJobMap[workerRank]->filename
-  , server->workerToJobMap[workerRank]->result.result
-  );
+  //printf(
+  //  "%s:%d\n"
+  //, server->workerToJobMap[workerRank]->filename
+  //, server->workerToJobMap[workerRank]->result.result
+  //);
 
   server->workerToJobMap[workerRank] = NULL;
 }
